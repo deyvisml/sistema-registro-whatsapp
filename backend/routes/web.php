@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WhatsappApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/enviar_mensaje',[WhatsappApiController::class, 'enviarMensaje']);
+Route::get('/webhook',[WhatsappApiController::class, 'verificacionwebhook']);
+Route::post('/webhook',[WhatsappApiController::class, 'procesarWebhook']);
