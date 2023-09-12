@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Message;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\WhatsappAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post("/register", [AuthController::class, "register"]);
+//Route::post("/register", [AuthController::class, "register"]);
 
-Route::post("/send_message", [Message::class, "store"]);
+Route::post("/send_message", [WhatsappAPIController::class, "send"]);
+
+Route::get("/messages", [MessageController::class, "index"]);
