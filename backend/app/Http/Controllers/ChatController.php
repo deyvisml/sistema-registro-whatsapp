@@ -11,10 +11,10 @@ class ChatController extends Controller
 
 
         $celularReceptor = '51950127962';
-        $nombreReceptor = 'Juan';           //nombre del usuario receptor
-        $urlImagen = 'xxx';
-        $urlPdf = 'yyy';
-        $tipoPlantilla = 'zzz';
+        $nombreReceptor = 'Juan';           // nombre del usuario receptor
+        $urlImagen = 'https://imagen.research.google/main_gallery_images/a-brain-riding-a-rocketship.jpg';
+        $urlPdf = 'https://www.redalyc.org/pdf/4137/413740749012.pdf';
+        $tipoPlantilla = 'plantillatextouno'; // Hay tres tipos uno imagen, texto y pdf: 'plantillapdfuno'    'plantillatextouno' 'plantillafotouno'
         
 
         try{
@@ -22,41 +22,114 @@ class ChatController extends Controller
             $token ='EAAL01VNxGRoBO2TX3apdrH7yPtzMRleTQIbwqeGuwKbm2WoFIZCxjg5PD4jouiH2f5uAKnkg2qN7fmQQN3JhLYqMHoYEZC68F1BoZB8QukKlUkRzRXy2iHIOyzdXGjBvVFnos1exexAK7TyeUxQGdWEbrH95dnPBPUpHKWaZCeKehCdQlSxBft5fTU8NZANgk7wN9ekPr3bBiIzJrtxA1j3q7nLAZD';
             $phoneId = '124049360790514';
             $version = 'v17.0';
-            $payload = [ 
-                'messaging_product' => 'whatsapp',
-                'to' => $celularReceptor,
-                'type' => 'template',
-                'template' => [
-                    'name' => 'plantillapdfuno',
-                    'language' => [
-                        'code' => 'es_MX'
-                    ],
-                    'components' =>[
-                        [
-                            'type' => 'header',
-                            'parameters'=>[
-                                [
-                                    'type' => 'document',
-                                    'document' => [
-                                    				'link' => 'https://www.redalyc.org/pdf/4137/413740749012.pdf'
-                                    			] // http(s)://URL'
-                                ]
-                                    ],
+
+
+            if($tipoPlantilla == 'plantillatextouno'){
+                $payload = [ 
+                    'messaging_product' => 'whatsapp',
+                    'to' => $celularReceptor,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'plantillatextouno',
+                        'language' => [
+                            'code' => 'es_MX'
                         ],
-                        
-                        [
-                            'type' => 'body',
-                            'parameters'=>[
-                                [
-                                    'type' => 'text',
-                                    'text' => $nombreReceptor
+                        'components' =>[
+                            [
+                                'type' => 'body',
+                                'parameters'=>[
+                                    [
+                                        'type' => 'text',
+                                        'text' => $nombreReceptor
+                                    ]
                                 ]
-                            ]                            
+                                
+                            ]
                         ]
                     ]
-                ]
-                
-            ];
+                    
+                ];
+
+            }elseif($tipoPlantilla == 'plantillafotouno'){
+
+                $payload = [ 
+                    'messaging_product' => 'whatsapp',
+                    'to' => $celularReceptor,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'plantillafotouno',
+                        'language' => [
+                            'code' => 'es_MX'
+                        ],
+                        'components' =>[
+                            [
+                                'type' => 'header',
+                                'parameters'=>[
+                                    [
+                                        'type' => 'image',
+                                        'image' => [ 'link' => $urlImagen ] 
+                                    ]
+                                        ],
+                            ],
+                            
+                            [
+                                'type' => 'body',
+                                'parameters'=>[
+                                    [
+                                        'type' => 'text',
+                                        'text' => $nombreReceptor
+                                    ]
+                                ]                            
+                            ]
+                        ]
+                    ]
+                    
+                ];
+            }elseif($tipoPlantilla == 'plantillapdfuno'){
+                $payload = [ 
+                    'messaging_product' => 'whatsapp',
+                    'to' => $celularReceptor,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'plantillapdfuno' ,
+                        'language' => [
+                            'code' => 'es_MX'
+                        ],
+                        'components' =>[
+                            [
+                                'type' => 'header',
+                                'parameters'=>[
+                                    [
+                                        'type' => 'document',
+                                        'document' => [	'link' => $urlPdf] // http(s)://URL'
+                                    ]
+                                ],
+                            ],
+                            
+                            [
+                                'type' => 'body',
+                                'parameters'=>[
+                                    [
+                                        'type' => 'text',
+                                        'text' => $nombreReceptor
+                                    ]
+                                ]                            
+                            ]
+                        ]
+                    ]
+                    
+                ];
+
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'error' => 'ingrese el nombre de la plantilla correctamente',
+                ], 400);
+
+            }
+
+
+
 
 
 
