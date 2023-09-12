@@ -42,8 +42,7 @@ class ChatController extends Controller
                                         'type' => 'text',
                                         'text' => $nombreReceptor
                                     ]
-                                ]
-                                
+                                ]                            
                             ]
                         ]
                     ]
