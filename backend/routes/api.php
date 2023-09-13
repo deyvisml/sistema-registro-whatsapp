@@ -24,11 +24,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route::post("/register", [AuthController::class, "register"]);
 
-Route::post("/send_message", [WhatsappAPIController::class, "send"]);
+Route::post("/send_message", [ChatController::class, "send_message"]);
 
 Route::get("/messages", [MessageController::class, "index"]);
+/*
 
 
 Route::get('/enviar_mensaje', [ChatController::class, 'enviarMensaje']);
 Route::get('/webhook', [ChatController::class, 'verificacionwebhook']);
 Route::post('/webhook', [ChatController::class, 'procesarWebhook']);
+*/

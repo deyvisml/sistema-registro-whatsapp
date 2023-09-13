@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class WhatsappAPIController extends Controller
+class ChatController extends Controller
 {
-    public function send(Request $request)
+    public function send_message(Request $request)
     {
         $request->validate([
             'contact' => 'required',
             'template' => 'required',
-            'message' => 'required',
+            'parameters' => 'required',
         ]);
 
         $phone_number = $request->input("contact");
         $type_template = $request->input("template");
-        $parameters = $request->input("message");
+        $parameters = $request->input("parameters");
 
         $whatsapp_api_controller = new WhatsappAPIController;
 

@@ -6,20 +6,68 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 
-class ChatController extends Controller
+class WhatsappAPIController extends Controller
 {
     public function send_message($phone_number, $type_template, $parameters)
     {
+
         switch ($type_template) {
             case 'text':
-                $name = $parameters["name"];
-                $name = $parameters["name"];
+                $name_value = $parameters["name_value"];
+                $text_value = $parameters["text_value"];
+
+                $payload = [
+                    'messaging_product' => 'whatsapp',
+                    'to' => $phone_number,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => 'plantillatextouno',
+                        'language' => [
+                            'code' => 'es_MX'
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'body',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => $name_value
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+
+                ];
+
                 break;
 
             default:
                 # code...
                 break;
         }
+
+
+        try {
+            $token = config("services.whatsapp.key");
+            $phone_id =  config("services.whatsapp.phone_id");
+            $version = config("services.whatsapp.version");
+
+            $message = Http::withToken($token)->post('https://graph.facebook.com/' . $version . '/' . $phone_id . '/messages', $payload)->throw()->json();
+        } catch (\Throwable $e) {
+            return response()->json([
+                'errorOccurred' => true,
+                'data' => $message,
+            ], 500);
+        }
+
+        return response()->json([
+            'errorOccurred' => false,
+            'data' => $message,
+        ], 200);
+
+
+        /*
         $urlImagen = 'https://imagen.research.google/main_gallery_images/a-brain-riding-a-rocketship.jpg';
         $urlPdf = 'https://www.redalyc.org/pdf/4137/413740749012.pdf';
 
@@ -28,9 +76,9 @@ class ChatController extends Controller
 
         try {
 
-            $token = 'EAAL01VNxGRoBO2TX3apdrH7yPtzMRleTQIbwqeGuwKbm2WoFIZCxjg5PD4jouiH2f5uAKnkg2qN7fmQQN3JhLYqMHoYEZC68F1BoZB8QukKlUkRzRXy2iHIOyzdXGjBvVFnos1exexAK7TyeUxQGdWEbrH95dnPBPUpHKWaZCeKehCdQlSxBft5fTU8NZANgk7wN9ekPr3bBiIzJrtxA1j3q7nLAZD';
-            $phoneId = '124049360790514';
-            $version = 'v17.0';
+            $token = config("services.whatsapp.key");
+            $phoneId =  config("services.whatsapp.phone_id");
+            $version = config("services.whatsapp.version");
 
 
             if ($tipoPlantilla == 'plantillatextouno') {
@@ -149,6 +197,8 @@ class ChatController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+
+        */
     }
 
     public function verificacionwebhook(Request $request)
