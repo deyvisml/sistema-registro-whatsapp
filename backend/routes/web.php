@@ -17,7 +17,3 @@ use App\Http\Controllers\ChatController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/enviar_mensaje',[ChatController::class, 'enviarMensaje']);
-Route::get('/webhook',[ChatController::class, 'verificacionwebhook']);
-Route::post('/webhook',[ChatController::class, 'procesarWebhook']);

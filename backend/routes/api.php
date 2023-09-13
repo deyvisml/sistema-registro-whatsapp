@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\WhatsappAPIController;
 
@@ -26,3 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post("/send_message", [WhatsappAPIController::class, "send"]);
 
 Route::get("/messages", [MessageController::class, "index"]);
+
+
+Route::get('/enviar_mensaje', [ChatController::class, 'enviarMensaje']);
+Route::get('/webhook', [ChatController::class, 'verificacionwebhook']);
+Route::post('/webhook', [ChatController::class, 'procesarWebhook']);
