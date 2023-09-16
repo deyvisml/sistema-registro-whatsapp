@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\Http;
 
 class WhatsappAPIController extends Controller
 {
-    public function send_message($phone_number, $type_template, $parameters)
+    public function send_message($phone_number, $template_key, $parameters)
     {
 
-        switch ($type_template) {
+        // text, image, pdf
+
+        switch ($template_key) {
             case 'text':
                 $name_value = $parameters["name_value"];
                 $text_value = $parameters["text_value"];
@@ -32,7 +34,11 @@ class WhatsappAPIController extends Controller
                                     [
                                         'type' => 'text',
                                         'text' => $name_value
-                                    ]
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $text_value
+                                    ],
                                 ]
                             ]
                         ]
@@ -56,149 +62,15 @@ class WhatsappAPIController extends Controller
             $message = Http::withToken($token)->post('https://graph.facebook.com/' . $version . '/' . $phone_id . '/messages', $payload)->throw()->json();
         } catch (\Throwable $e) {
             return response()->json([
-                'errorOccurred' => true,
-                'data' => $message,
-            ], 500);
+                'error_occurred' => true,
+                'data' => ["message" => "An error occurred sending the message :("],
+            ], 200);
         }
 
         return response()->json([
-            'errorOccurred' => false,
-            'data' => $message,
+            'error_occurred' => false,
+            'data' => ["message" => "The message was successfully send :)"],
         ], 200);
-
-
-        /*
-        $urlImagen = 'https://imagen.research.google/main_gallery_images/a-brain-riding-a-rocketship.jpg';
-        $urlPdf = 'https://www.redalyc.org/pdf/4137/413740749012.pdf';
-
-        $tipoPlantilla = 'plantillatextouno'; // Hay tres tipos uno imagen, texto y pdf: 'plantillapdfuno'    'plantillatextouno' 'plantillafotouno'
-
-
-        try {
-
-            $token = config("services.whatsapp.key");
-            $phoneId =  config("services.whatsapp.phone_id");
-            $version = config("services.whatsapp.version");
-
-
-            if ($tipoPlantilla == 'plantillatextouno') {
-                $payload = [
-                    'messaging_product' => 'whatsapp',
-                    'to' => $celularReceptor,
-                    'type' => 'template',
-                    'template' => [
-                        'name' => 'plantillatextouno',
-                        'language' => [
-                            'code' => 'es_MX'
-                        ],
-                        'components' => [
-                            [
-                                'type' => 'body',
-                                'parameters' => [
-                                    [
-                                        'type' => 'text',
-                                        'text' => $nombreReceptor
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-
-                ];
-            } elseif ($tipoPlantilla == 'plantillafotouno') {
-
-                $payload = [
-                    'messaging_product' => 'whatsapp',
-                    'to' => $celularReceptor,
-                    'type' => 'template',
-                    'template' => [
-                        'name' => 'plantillafotouno',
-                        'language' => [
-                            'code' => 'es_MX'
-                        ],
-                        'components' => [
-                            [
-                                'type' => 'header',
-                                'parameters' => [
-                                    [
-                                        'type' => 'image',
-                                        'image' => ['link' => $urlImagen]
-                                    ]
-                                ],
-                            ],
-
-                            [
-                                'type' => 'body',
-                                'parameters' => [
-                                    [
-                                        'type' => 'text',
-                                        'text' => $nombreReceptor
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-
-                ];
-            } elseif ($tipoPlantilla == 'plantillapdfuno') {
-                $payload = [
-                    'messaging_product' => 'whatsapp',
-                    'to' => $celularReceptor,
-                    'type' => 'template',
-                    'template' => [
-                        'name' => 'plantillapdfuno',
-                        'language' => [
-                            'code' => 'es_MX'
-                        ],
-                        'components' => [
-                            [
-                                'type' => 'header',
-                                'parameters' => [
-                                    [
-                                        'type' => 'document',
-                                        'document' => ['link' => $urlPdf] // http(s)://URL'
-                                    ]
-                                ],
-                            ],
-
-                            [
-                                'type' => 'body',
-                                'parameters' => [
-                                    [
-                                        'type' => 'text',
-                                        'text' => $nombreReceptor
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-
-                ];
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'ingrese el nombre de la plantilla correctamente',
-                ], 400);
-            }
-
-
-
-
-
-
-            $message = Http::withToken($token)->post('https://graph.facebook.com/v17.0/' . $phoneId . '/messages', $payload)->throw()->json();
-            return response()->json([
-                'success' => true,
-                'data' => $message,
-            ], 200);
-        } catch (Exceptio $e) {
-            return response()->json([
-                'success' => false,
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-
-        */
     }
 
     public function verificacionwebhook(Request $request)
@@ -251,7 +123,7 @@ class WhatsappAPIController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 200);
         }
     }
 }

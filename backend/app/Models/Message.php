@@ -9,5 +9,13 @@ class Message extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "phone_number",
+        "alias",
+        "received_at",
+        "message",
+        "type",
+    ];
+
     protected $table = 'messages';
 }

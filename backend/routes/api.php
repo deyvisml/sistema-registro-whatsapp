@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\WhatsappAPIController;
 
 /*
@@ -26,7 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post("/send_message", [ChatController::class, "send_message"]);
 
+Route::get("/templates", [TemplateController::class, "index"]);
 Route::get("/messages", [MessageController::class, "index"]);
+Route::get("/fields", [TemplateController::class, "fields"]);
 /*
 
 
