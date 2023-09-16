@@ -119,7 +119,7 @@ class WhatsappAPIController extends Controller
                 'data' => $body,
                 //'data' => $bodyContent,
             ], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage(),
