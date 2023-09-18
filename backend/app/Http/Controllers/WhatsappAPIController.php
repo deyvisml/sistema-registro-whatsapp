@@ -223,8 +223,6 @@ class WhatsappAPIController extends Controller
 
                     $phone_number = $value['contacts'][0]['wa_id'];
                     $alias = $value['contacts'][0]['profile']['name'];
-                    //$received_at = time();
-                    //$received_at = date('Y-m-d H:i:s', 1695018160);
                     $received_at = date('Y-m-d H:i:s', $value['messages'][0]['timestamp']);
                     $message = $value['messages'][0]['text']['body'];
                     $type = 1;
