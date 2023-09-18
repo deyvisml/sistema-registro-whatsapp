@@ -200,36 +200,37 @@ class WhatsappAPIController extends Controller
         }
     }
 
-    public function procesarWebhook(Request $request)
-    try{
+    public function procesarWebhook(Request $request){  // this function reveived the peticion of type post (recibimos los mensajes)
+        try{
 
             
-        $bodyContent = json_decode($request->getContent(), true);
-        $value = $bodyContent['entry'][0]['changes'][0]['value'];
-        $body = '';
+            $bodyContent = json_decode($request->getContent(), true);
+            $value = $bodyContent['entry'][0]['changes'][0]['value'];
+            $body = '';
 
-        if (!empty($value['messages'])){    // solo ejecutamos cuando nos envian un mensaje y no cuando leen el mensaje que enviamos
-            if ($value['messages'][0]['type'] == 'text'){
-                //$body = $value['messages'][0]['text']['body'];
-                $body = array(); // Inicializar $body como un arreglo vacío
-                $body['input_message'] = $value['messages'][0]['text']['body'];
-                $body['input_name'] = $value['contacts'][0]['profile']['name'];
-                $body['input_phone_number'] = $value['contacts'][0]['wa_id'];
+            if (!empty($value['messages'])){    // solo ejecutamos cuando nos envian un mensaje y no cuando leen el mensaje que enviamos
+                if ($value['messages'][0]['type'] == 'text'){
+                    //$body = $value['messages'][0]['text']['body'];
+                    $body = array(); // Inicializar $body como un arreglo vacío
+                    $body['input_message'] = $value['messages'][0]['text']['body'];
+                    $body['input_name'] = $value['contacts'][0]['profile']['name'];
+                    $body['input_phone_number'] = $value['contacts'][0]['wa_id'];
+                }
             }
+
+
+            return response()->json([
+                'success' => true,
+                'data' => $body,
+                //'data' => $bodyContent,
+            ], 200);
+
         }
-
-
-        return response()->json([
-            'success' => true,
-            'data' => $body,
-            //'data' => $bodyContent,
-        ], 200);
-
-    }
-    catch(Exception $e){
-        return response()->json([
-            'success' => false,
-            'error' => $e->getMessage(),
-        ], 500);
+        catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
