@@ -1,0 +1,113 @@
+[33mcommit 7741c0584f2c1b8fddd7378f73b819bb3cd925a9[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Fri Sep 15 20:40:00 2023 -0500
+
+    Fixing problems related with git, because I rename a controller
+
+[33mcommit 23b4f8e445aeff56395dcf189634937731c89f95[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Fri Sep 15 20:36:38 2023 -0500
+
+    saving the controller whatsappapi, there were some problems because it was delete and then didn't want to added it again, very rarely
+
+[33mcommit a982323ebc2257498affc84c160d8614073945d1[m[33m ([m[1;31morigin/deyvis[m[33m)[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Fri Sep 15 20:11:20 2023 -0500
+
+    UI almost finish, but the api to send message is not working yet, maybe config the paypall or api keys.
+
+[33mcommit e49598d00efc78ed4e2ade1e70c577fe1c76edf9[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Tue Sep 12 20:13:53 2023 -0500
+
+    fix problem related with public api whatsapp key
+
+[33mcommit 0d719525c0f4f89d5274504061239dcf085f9a4e[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Tue Sep 12 19:24:55 2023 -0500
+
+    In process but share for the colaborators.
+
+[33mcommit d79f27e76a5ff9e486030bbbf2bd398e2093d461[m
+Author: Ju4n <juan@gmail.com>
+Date:   Tue Sep 12 15:54:37 2023 -0500
+
+    antes del merge con git pull
+
+[33mcommit 298a306b026806d659217bb49bd895b77eebfe40[m
+Author: Ju4n <juan@gmail.com>
+Date:   Tue Sep 12 11:09:16 2023 -0500
+
+    creacion de witch en controlador ChatController, para escoger el tipo de plantilla para enviar mensajes
+
+[33mcommit b11ca560a500684d17f4e1ef7593fbb28f0dea4c[m
+Author: Ju4n <juan@gmail.com>
+Date:   Tue Sep 12 10:14:57 2023 -0500
+
+    modificacion del controlador ChatController
+
+[33mcommit 3dbe3aceaede096a139d914ef4f332ee341690b3[m
+Author: Ju4n <juan@gmail.com>
+Date:   Tue Sep 12 10:00:20 2023 -0500
+
+    creacion de controlador para recibir y enviar mensajes y modificacion de rutas. el controlador es llamado ChatController
+
+[33mcommit cadb3ac3ad266ab61881b1df824a53e3d8b964ed[m
+Author: Ju4n <juan@gmail.com>
+Date:   Tue Sep 12 09:35:10 2023 -0500
+
+    mi clase  whatsappApiController fue totalmente reemplazado por la clase de deyvis
+
+[33mcommit 43c50b0a8cab28b31173b8442ec5fe0c87e6ca01[m
+Merge: 81e4f2a 5c3ab79
+Author: deyvisml <77867745+deyvisml@users.noreply.github.com>
+Date:   Mon Sep 11 20:55:41 2023 -0500
+
+    Merge pull request #2 from deyvisml/deyvis
+    
+    feat: fetching messages, but solve and thnk about kind of messages.
+
+[33mcommit 5c3ab79b68553475d6ba9018acac676b09e27173[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Mon Sep 11 20:52:46 2023 -0500
+
+    feat: fetching messages, but solve and thnk about kind of messages, consideraing the kind of templates.
+
+[33mcommit 81e4f2a3eb71ebd90fb9dbce72da7ccbe1303b48[m
+Merge: 035cdd5 c989677
+Author: deyvisml <77867745+deyvisml@users.noreply.github.com>
+Date:   Mon Sep 11 08:33:13 2023 -0500
+
+    Merge pull request #1 from deyvisml/deyvis
+    
+    feat: UI modify, App component added.
+
+[33mcommit c989677fd0dec6cb5a44e8fdbf6ef8951725658e[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Mon Sep 11 08:29:13 2023 -0500
+
+    feat: UI modify, App component added.
+
+[33mcommit 035cdd5c909b851a83a059f4bf9b72b266b9eb92[m
+Author: Ju4n <juan@gmail.com>
+Date:   Mon Sep 11 06:53:55 2023 -0500
+
+    Actualizacion de controlador WhatsappApiController, y rutas para usar la api de whatsapp
+
+[33mcommit 48a0fa24b41b144a0ac4ffe1c1d6b7c6e5021384[m
+Author: Ju4n <juan@gmail.com>
+Date:   Mon Sep 11 06:43:09 2023 -0500
+
+    Creación de controlador, no se nada del archivo package-lock.json, ojala no de errores en el futuro
+
+[33mcommit 4a7c5acc3c17371e22c6b4977361ab012104da6e[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Sun Sep 10 17:37:55 2023 -0500
+
+    starting the project - first commit
+
+[33mcommit eb34fdf0dc2a5d1c8db59ae422820ab9c3647078[m
+Author: Deyvis ML <deyvisml2002@gmail.com>
+Date:   Sun Sep 10 17:35:57 2023 -0500
+
+    first commit
