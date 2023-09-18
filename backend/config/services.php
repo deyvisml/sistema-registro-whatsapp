@@ -35,6 +35,8 @@ return [
         "key" => env("WHATSAPP_KEY"),
         "phone_id" => env("WHATSAPP_PHONE_ID"),
         "version" => env("WHATSAPP_VERSION"),
+        "tokenwebhook" => env("WHATSAPP_TOKEN_WEBHOOK"),
     ]
 
 ];
+

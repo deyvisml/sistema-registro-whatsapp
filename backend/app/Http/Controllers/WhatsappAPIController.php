@@ -6,14 +6,29 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Support\Facades\Http;
+use App\Models\Message;
 
 class WhatsappAPIController extends Controller
 {
     public function send_message($phone_number, $template_key, $parameters)
-    {
+    //public function send_message()
+    {   
+        
+        /*
+        $phone_number = '51950127962';
+        //dd($phone_number);
+        $template_key = 'pdf';
+        // values only text (code of example. delete after)        
+        //$parameters = ["name_value" => "Dany", "text_value" => "mensaje de prueba", "url_value" => null];
+        // values only image (code of example. delete after)
+        $parameters = ["name_value" =>"juan", "text_value"=>"mensaje de prueba", "image_value"=>"https://imagen.research.google/main_gallery_images/a-brain-riding-a-rocketship.jpg"];
+        // values only pdf (code of example. delete after)
+        $parameters = ["name_value"=>"juan", "text_value"=>"mensaje de prueba", "pdf_url_value"=>"https://www.ub.edu/doctorat_eapa/wp-content/uploads/2012/12/El-art%C3%ADculo-cient%C3%ADfico_aspectos-a-tener-en-cuenta.pdf"];
+        //dd($parameters);
 
         // text, image, pdf
-
+        
+        //$template_key = 'image';*/
         switch ($template_key) {
             case 'text':
                 $name_value = $parameters["name_value"];    // Juan, deyvis 
@@ -150,15 +165,19 @@ class WhatsappAPIController extends Controller
 
 
         try {
+
             $token = config("services.whatsapp.key");
             $phone_id =  config("services.whatsapp.phone_id");
             $version = config("services.whatsapp.version");
+            
 
-            Http::withToken($token)->post('https://graph.facebook.com/' . $version . '/' . $phone_id . '/messages', $payload)->throw()->json();
-        } catch (\Throwable $e) {
+            $message = Http::withToken($token)->post('https://graph.facebook.com/' . $version . '/' . $phone_id . '/messages', $payload)->throw()->json();
+        } 
+        catch (\Throwable $e) {
             return response()->json([
                 'error_occurred' => true,
-                'data' => ["message" => "An error occurred sending the message :("],
+                //'data' => ["message" => "An error occurred sending the message :("],
+                'data' => $message, // util para ver el tipo de error del payload
             ], 200);
         }
 
@@ -171,9 +190,9 @@ class WhatsappAPIController extends Controller
     public function verificacionwebhook(Request $request)
     {
         try {
-            $verifytoken = 'thisismyverificationtoken!!';
-            $query = $request->query();
 
+            $verifytoken = config("services.whatsapp.tokenwebhook");
+            $query = $request->query();
             $mode = $query['hub_mode'];
             $token = $query['hub_verify_token'];
             $challenge = $query['hub_challenge'];
@@ -205,10 +224,23 @@ class WhatsappAPIController extends Controller
 
                     $phone_number = $value['contacts'][0]['wa_id'];
                     $alias = $value['contacts'][0]['profile']['name'];
+<<<<<<< HEAD
                     $received_at = time();
                     $message = $value['messages'][0]['text']['body'];
                     $type = 1;
 
+=======
+                    $received_at = date('Y-m-d H:i:s', $value['messages'][0]['timestamp']);
+                    $message = $value['messages'][0]['text']['body'];
+                    $type = 1;
+
+                    $body = array(); // Inicializar $body como un arreglo vacío
+                    $body['input_message'] = $value['messages'][0]['text']['body'];
+                    $body['input_name'] = $value['contacts'][0]['profile']['name'];
+                    $body['input_phone_number'] = $value['contacts'][0]['wa_id'];
+                    $body['input_timestamp'] = $value['messages'][0]['timestamp'];
+
+>>>>>>> branchJuanCarlos
                     Message::create([
                         "phone_number" => $phone_number,
                         "alias" => $alias,
