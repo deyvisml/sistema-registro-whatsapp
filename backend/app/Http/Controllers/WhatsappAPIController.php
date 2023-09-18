@@ -11,7 +11,6 @@ class WhatsappAPIController extends Controller
 {
     public function send_message($phone_number, $template_key, $parameters)
     {
-
         // text, image, pdf
 
         switch ($template_key) {
