@@ -9,6 +9,7 @@ class ChatController extends Controller
 {
     public function send_message(Request $request)
     {
+
         $request->validate([
             'phone_number' => 'required',
             'template_id' => 'required|exists:templates,id',
@@ -19,6 +20,7 @@ class ChatController extends Controller
         $template = Template::find($template_id);
 
         $parameters = array();
+
 
         switch ($template->key) {
             case 'text':
@@ -35,8 +37,10 @@ class ChatController extends Controller
                     'image_url_value' => 'required',
                     'text_value' => 'required',
                 ]);
+
+
                 $parameters["name_value"] = $request->input("name_value");
-                $parameters["image_value"] = $request->input("image_value");
+                $parameters["image_url_value"] = $request->input("image_url_value");
                 $parameters["text_value"] = $request->input("text_value");
                 break;
             case 'pdf':
@@ -45,6 +49,10 @@ class ChatController extends Controller
                     'pdf_url_value' => 'required',
                     'text_value' => 'required',
                 ]);
+
+                $parameters["name_value"] = $request->input("name_value");
+                $parameters["pdf_url_value"] = $request->input("pdf_url_value");
+                $parameters["text_value"] = $request->input("text_value");
                 break;
             default:
                 $data = [
@@ -56,11 +64,12 @@ class ChatController extends Controller
                 break;
         }
 
-
+        //return response()->json($template->key);
         $whatsapp_api_controller = new WhatsappAPIController;
 
         $response = $whatsapp_api_controller->send_message($phone_number, $template->key, $parameters);
-        //dd($response);
+
+        //return response()->json($response);
 
         return $response;
     }

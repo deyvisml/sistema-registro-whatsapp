@@ -6,29 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Support\Facades\Http;
-use App\Models\Message;
 
 class WhatsappAPIController extends Controller
 {
     public function send_message($phone_number, $template_key, $parameters)
-    //public function send_message()
     {
-
-        /*
-        $phone_number = '51950127962';
-        //dd($phone_number);
-        $template_key = 'pdf';
-        // values only text (code of example. delete after)        
-        //$parameters = ["name_value" => "Dany", "text_value" => "mensaje de prueba", "url_value" => null];
-        // values only image (code of example. delete after)
-        $parameters = ["name_value" =>"juan", "text_value"=>"mensaje de prueba", "image_value"=>"https://imagen.research.google/main_gallery_images/a-brain-riding-a-rocketship.jpg"];
-        // values only pdf (code of example. delete after)
-        $parameters = ["name_value"=>"juan", "text_value"=>"mensaje de prueba", "pdf_url_value"=>"https://www.ub.edu/doctorat_eapa/wp-content/uploads/2012/12/El-art%C3%ADculo-cient%C3%ADfico_aspectos-a-tener-en-cuenta.pdf"];
-        //dd($parameters);
-
-        // text, image, pdf
-        
-        //$template_key = 'image';*/
         switch ($template_key) {
             case 'text':
                 $name_value = $parameters["name_value"];    // Juan, deyvis 

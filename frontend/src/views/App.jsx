@@ -253,11 +253,11 @@ const App = () => {
               <p>Cargando...</p>
             ) : (
               data.data.messages.map(
-                ({ id, message, phone_number, received_at }) => (
+                ({ id, message, phone_number, alias, received_at }) => (
                   <MessageItem
                     key={id}
                     phone_number={phone_number}
-                    name="dyvs"
+                    name={alias}
                     time={moment(received_at).calendar()}
                     message={message}
                   />

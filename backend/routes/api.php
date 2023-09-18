@@ -31,8 +31,5 @@ Route::get("/templates", [TemplateController::class, "index"]);
 Route::get("/messages", [MessageController::class, "index"]);
 Route::get("/fields", [TemplateController::class, "fields"]);
 
-
-
-//Route::get('/enviar_mensaje', [WhatsappAPIController::class, 'send_message']);
 Route::get('/webhook', [WhatsappAPIController::class, 'verificacionwebhook']);
 Route::post('/webhook', [WhatsappAPIController::class, 'received_message']);
