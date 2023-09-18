@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Message;
 use Illuminate\Support\Facades\Http;
 
 class WhatsappAPIController extends Controller
@@ -15,15 +16,14 @@ class WhatsappAPIController extends Controller
 
         switch ($template_key) {
             case 'text':
-                $name_value = $parameters["name_value"];
+                $name_value = $parameters["name_value"];    // Juan, deyvis 
                 $text_value = $parameters["text_value"];
-
                 $payload = [
                     'messaging_product' => 'whatsapp',
                     'to' => $phone_number,
                     'type' => 'template',
                     'template' => [
-                        'name' => 'plantillatextouno',
+                        'name' => "plantillatextodos",
                         'language' => [
                             'code' => 'es_MX'
                         ],
@@ -34,22 +34,117 @@ class WhatsappAPIController extends Controller
                                     [
                                         'type' => 'text',
                                         'text' => $name_value
+                                        //'text' => [$name_value, 'hay_camaras']
                                     ],
                                     [
                                         'type' => 'text',
                                         'text' => $text_value
-                                    ],
+                                        //'text' => [$name_value, 'hay_camaras']
+                                    ]
                                 ]
                             ]
                         ]
                     ]
 
                 ];
-
                 break;
 
+            case 'image':
+                $name_value = $parameters["name_value"];    // Juan, deyvis 
+                $text_value = $parameters["text_value"];
+                $image_url_value  = $parameters["image_url_value"];
+                $photo_name_value = 'presione para descargar';
+
+                $payload = [
+                    'messaging_product' => 'whatsapp',
+                    'to' => $phone_number,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => "plantillafotodos",
+                        'language' => [
+                            'code' => 'es_MX'
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'header',
+                                'parameters' => [
+                                    [
+                                        'type' => 'image',
+                                        'image' => ['link' => $image_url_value]
+                                    ]
+                                ],
+                            ],
+
+                            [
+                                'type' => 'body',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => $name_value
+                                        //'text' => [$name_value, 'segundo_valor']
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $text_value
+                                        //'text' => [$name_value, 'hay_camaras']
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+
+                ];
+                break;
+
+            case 'pdf':
+                $name_value = $parameters["name_value"];    // Juan, deyvis 
+                $text_value = $parameters["text_value"];    // 
+                $pdf_url_value = $parameters["pdf_url_value"];
+                $pdf_name_value = 'presione para descargar';
+                $payload = [
+                    'messaging_product' => 'whatsapp',
+                    'to' => $phone_number,
+                    'type' => 'template',
+                    'template' => [
+                        'name' => "plantillapdfdos",
+                        'language' => [
+                            'code' => 'es_MX'
+                        ],
+                        'components' => [
+                            [
+                                'type' => 'header',
+                                'parameters' => [
+                                    [
+                                        'type' => 'document',
+                                        'document' => ['link' => $pdf_url_value, 'filename' => $pdf_name_value] // http(s)://URL'
+                                    ]
+                                ],
+                            ],
+
+                            [
+                                'type' => 'body',
+                                'parameters' => [
+                                    [
+                                        'type' => 'text',
+                                        'text' => $name_value
+                                    ],
+                                    [
+                                        'type' => 'text',
+                                        'text' => $text_value
+
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+
+                ];
+                break;
             default:
-                # code...
+                return response()->json([
+                    'success' => false,
+                    'error' => 'ingrese el nombre de la plantilla correctamente',
+                ], 400);
                 break;
         }
 
@@ -59,7 +154,7 @@ class WhatsappAPIController extends Controller
             $phone_id =  config("services.whatsapp.phone_id");
             $version = config("services.whatsapp.version");
 
-            $message = Http::withToken($token)->post('https://graph.facebook.com/' . $version . '/' . $phone_id . '/messages', $payload)->throw()->json();
+            Http::withToken($token)->post('https://graph.facebook.com/' . $version . '/' . $phone_id . '/messages', $payload)->throw()->json();
         } catch (\Throwable $e) {
             return response()->json([
                 'error_occurred' => true,
@@ -90,7 +185,7 @@ class WhatsappAPIController extends Controller
             }
 
             throw new Exception('Invalid request');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage(),
@@ -98,32 +193,42 @@ class WhatsappAPIController extends Controller
         }
     }
 
-    public function procesarWebhook(Request $request)
+    public function received_message(Request $request)
     {  // this function reveived the peticion of type post (recibimos los mensajes)
         try {
-
-
             $bodyContent = json_decode($request->getContent(), true);
             $value = $bodyContent['entry'][0]['changes'][0]['value'];
             $body = '';
 
             if (!empty($value['messages'])) {    // solo ejecutamos cuando nos envian un mensaje y no cuando leen el mensaje que enviamos
                 if ($value['messages'][0]['type'] == 'text') {
-                    $body = $value['messages'][0]['text']['body'];
+
+                    $phone_number = $value['contacts'][0]['wa_id'];
+                    $alias = $value['contacts'][0]['profile']['name'];
+                    $received_at = time();
+                    $message = $value['messages'][0]['text']['body'];
+                    $type = 1;
+
+                    Message::create([
+                        "phone_number" => $phone_number,
+                        "alias" => $alias,
+                        "received_at" => $received_at,
+                        "message" => $message,
+                        "type" => $type,
+                    ]);
                 }
             }
-
 
             return response()->json([
                 'success' => true,
                 'data' => $body,
                 //'data' => $bodyContent,
             ], 200);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage(),
-            ], 200);
+            ], 500);
         }
     }
 }
