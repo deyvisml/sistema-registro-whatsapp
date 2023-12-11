@@ -68,6 +68,8 @@ class ChatController extends Controller
 
         $response = $whatsapp_api_controller->send_message($phone_number, $template->key, $parameters);
 
+        // test
+
         //return response()->json($response);
 
         return $response;
