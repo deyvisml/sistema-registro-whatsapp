@@ -9,7 +9,6 @@ class ChatController extends Controller
 {
     public function send_message(Request $request)
     {
-
         $request->validate([
             'phone_number' => 'required',
             'template_id' => 'required|exists:templates,id',
@@ -68,6 +67,8 @@ class ChatController extends Controller
         $whatsapp_api_controller = new WhatsappAPIController;
 
         $response = $whatsapp_api_controller->send_message($phone_number, $template->key, $parameters);
+
+        // test
 
         //return response()->json($response);
 
