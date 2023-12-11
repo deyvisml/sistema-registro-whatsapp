@@ -147,18 +147,16 @@ class WhatsappAPIController extends Controller
 
 
         try {
-
             $token = config("services.whatsapp.key");
             $phone_id =  config("services.whatsapp.phone_id");
             $version = config("services.whatsapp.version");
 
-
             $message = Http::withToken($token)->post('https://graph.facebook.com/' . $version . '/' . $phone_id . '/messages', $payload)->throw()->json();
         } catch (\Throwable $e) {
+            
             return response()->json([
                 'error_occurred' => true,
-                //'data' => ["message" => "An error occurred sending the message :("],
-                'data' => $message, // util para ver el tipo de error del payload
+                'data' => ["message" => "An error occurred sending the message :("]
             ], 200);
         }
 

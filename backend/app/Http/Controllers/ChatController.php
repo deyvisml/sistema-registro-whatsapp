@@ -9,7 +9,6 @@ class ChatController extends Controller
 {
     public function send_message(Request $request)
     {
-
         $request->validate([
             'phone_number' => 'required',
             'template_id' => 'required|exists:templates,id',
